@@ -1,4 +1,4 @@
-/ load up the express framework and body-parser helper
+// load up the express framework and body-parser helper
 const express = require('express');
 const bodyParser = require('body-parser');
 
@@ -18,6 +18,6 @@ app.use(bodyParser.urlencoded({ extended: true }));
 const routes = require('./routes/routes.js')(app, fs);
 
 // finally, launch our server on port 3001.
-const server = app.listen(3001, () => {
+const server = app.listen(8080, () => {
     console.log('listening on port %s...', server.address().port);
 });
