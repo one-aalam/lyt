@@ -1,57 +1,38 @@
 const file = require('../utils/file');
 
-const userRoutes = (app, fs) => {
+const userRoutes = (app) => {
 
     // variables
     const dataPath = './data/users.json';
 
     // READ
-    app.get('/users', (req, res) => file.read(data => res.send(data), true, dataPath));
+    app.get('/users', (_, res) => file.read(data => res.send(data), true, dataPath));
 
     // CREATE
     app.post('/users', (req, res) => {
-
         file.read(data => {
             const newUserId = Object.keys(data).length + 1;
-            // add the new user
-            data[newUserId] = JSON.parse(req.body.data);
-
-            file.write(JSON.stringify(data, null, 2), () => {
-                res.status(200).send('new user added');
-            }, dataPath);
+            data[newUserId] = req.body;
+            file.write(JSON.stringify(data, null, 2), () => res.status(200).send(`new user ${newUserId} added`), dataPath);
         },true, dataPath);
     });
 
     // UPDATE
     app.put('/users/:id', (req, res) => {
-
         file.read(data => {
-
-            // add the new user
             const userId = req.params["id"];
-            data[userId] = JSON.parse(req.body.data);
-
-            file.write(JSON.stringify(data, null, 2), () => {
-                res.status(200).send(`users id:${userId} updated`);
-            });
-        },
-            true);
+            data[userId] = req.body;
+            file.write(JSON.stringify(data, null, 2), () => res.status(200).send(`users id:${userId} updated`), dataPath);
+        }, true, dataPath);
     });
 
     // DELETE
     app.delete('/users/:id', (req, res) => {
-
         file.read(data => {
-
-            // add the new user
             const userId = req.params["id"];
             delete data[userId];
-
-            file.write(JSON.stringify(data, null, 2), () => {
-                res.status(200).send(`users id:${userId} removed`);
-            });
-        },
-            true);
+            file.write(JSON.stringify(data, null, 2), () => res.status(200).send(`users id:${userId} removed`), dataPath);
+        }, true, dataPath);
     });
 };
 
