@@ -1,5 +1,6 @@
 // load up our shiny new route for users
 const userRoutes = require('./users');
+const authRoutes = require('./auth');
 
 const appRouter = (app, fs) => {
     // we've added in a default route here that handles empty routes
@@ -8,6 +9,7 @@ const appRouter = (app, fs) => {
 
     // run our user route module here to complete the wire up
     userRoutes(app, fs);
+    authRoutes(app, fs);
 };
 
 module.exports = appRouter;
